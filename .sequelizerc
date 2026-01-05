@@ -1,0 +1,8 @@
+const path = require('path');
+
+module.exports = {
+  'config': path.resolve('src', 'config', 'database.cjs'), // Apontei para meu banco de dados.
+  'migrations-path': path.resolve('src', 'database', 'migrations')
+};
+
+// Acabei fazendo usando o CommonJS pois usando o ESModule estava dando problema na hora do Sequelize pegar as informações encapsuladas do ESModule.
