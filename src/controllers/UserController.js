@@ -1,6 +1,46 @@
 import User from "../models/User.js";
+import bcrypt from "bcryptjs";
 
 export default {
+    async login(req, res) {
+        const { password, email, islogged } = req.body;  // Recebendo os parâmetros
+        const user = await User.findOne({ where: { email } });  //Verificação para saber se usuário existe.
+
+        //Se user vier vazio ou nulo
+        if (!user) {
+            return res.status(400).send({
+                status: 0,
+                message: 'E-mail ou senha incorreto!'
+            });
+        }
+
+        // Verificar se as senhas estão iguais.
+        if (!bcrypt.compareSync( password, user.password )) {
+            return res.status(400).send({
+                status: 0,
+                message: 'E-mail ou senha incorreto!'
+            });
+        }
+
+        const user_id = user.id;
+        
+        await User.update({
+            islogged
+        }, {
+            where: {
+                id: user_id
+            }
+        });
+
+        user.password = undefined   //Assim não aparece no retorno
+
+        return res.status(200).send({
+            status: 1,
+            message: "Usuário logado com sucesso!",
+            user
+        })
+    },
+
     // index: Buscar tudo que tem no banco em uma tabela específica
     async index(req, res){
         const users = await User.findAll();
