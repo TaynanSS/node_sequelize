@@ -1,6 +1,15 @@
 import User from "../models/User.js";
 import bcrypt from "bcryptjs";
 
+import jwt from 'jsonwebtoken';
+import authConfig from '../config/auth.json' with { type: 'json' };
+
+function generateToken(params = {}) {
+    return jwt.sign(params, authConfig.secret, {
+        expiresIn: 78300,
+    });
+}
+
 export default {
     async login(req, res) {
         const { password, email, islogged } = req.body;  // Recebendo os parâmetros
@@ -32,12 +41,14 @@ export default {
             }
         });
 
-        user.password = undefined   //Assim não aparece no retorno
+        user.password = undefined   //Assim não aparece no retorno 
+
+        const token = generateToken({ id: user_id });
 
         return res.status(200).send({
             status: 1,
             message: "Usuário logado com sucesso!",
-            user
+            user, token
         })
     },
 
@@ -58,10 +69,12 @@ export default {
 
         const user = await User.create({ name, password, email });
 
+        const token = generateToken({ id: user_id });
+
         return res.status(200).send({
             status: 1,
             message: 'Usuário cadastrado com sucesso',
-            user
+            user, token
         })
     },
 
