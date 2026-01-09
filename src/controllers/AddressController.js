@@ -1,5 +1,5 @@
-import User from '../models/User';
-import Address from '../models/Address';
+import User from '../models/User.js';
+import Address from '../models/Address.js';
 
 
 export default {
@@ -17,7 +17,7 @@ export default {
             });
         }
 
-        return res.status(200).send(user.address);
+        return res.status(200).send(user);
     },
 
     async store(req, res) {

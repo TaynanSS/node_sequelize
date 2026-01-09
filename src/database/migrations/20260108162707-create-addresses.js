@@ -46,7 +46,7 @@ export default {
         allowNull: false,
       },
 
-      update_at: {
+      updated_at: {
         type: Sequelize.DATE,
         allowNull: false,
       }
