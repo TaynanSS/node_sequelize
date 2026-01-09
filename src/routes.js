@@ -2,8 +2,10 @@ import express, { json, Router } from 'express';
 
 import UserController from './controllers/UserController.js';
 import AddressController from './controllers/AddressController.js';
+import CourseController from './controllers/CourseController.js';
 
 import authMiddleware from './middlewares/auth.js';
+
 
 const router = express.Router();
 
@@ -20,5 +22,8 @@ router.post('/users/:user_id/address', AddressController.store);
 router.put('/users/:id/address', AddressController.update);
 router.delete('/users/:id/address', AddressController.delete);
 
+router.get('/users/:user_id/courses', CourseController.index);
+router.post('/users/:user_id/courses', CourseController.store);
+router.delete('/users/:user_id/courses', CourseController.delete);
 
 export default router;
